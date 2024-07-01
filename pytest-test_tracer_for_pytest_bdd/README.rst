@@ -32,7 +32,7 @@ Installation
 
 You can install "pytest-test-tracer-for-pytest" via `pip`_ from `PyPI`_::
 
-    $ pip install pytest-test-tracer-for-pytest
+    $ pip install pytest-test-tracer-for-pytest-bdd
 
 
 Usage
