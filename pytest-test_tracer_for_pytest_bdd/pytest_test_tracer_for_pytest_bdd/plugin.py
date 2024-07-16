@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 import glob
 import json
+import math
 from pathlib import Path
 import shutil
 import socket
@@ -14,7 +15,7 @@ from . import constants
 
 class TestTracerPlugin:
     test_data = {}
-    name = "Test Tracer for Pytest"
+    name = "Test Tracer for Pytest BDD"
 
     def __init__(self, config):
         log_level = logging.DEBUG if config.option.verbose > 1 else logging.INFO
@@ -22,25 +23,38 @@ class TestTracerPlugin:
         self.logger = logging.getLogger(self.name)
         self.__validate_arguments(config)
         self.test_data = {}
+        self.__step_data = {}
         self.__reset_results_folder()
 
     # hooks
 
     def pytest_bdd_before_step_call(self, request, feature, scenario, step, step_func):
-        self.__step_times[step.line_number] = {"start": datetime.now(timezone.utc)}
+        if not self.enabled:
+            return
+
+        self.__step_data[step.line_number] = {"start": datetime.now(timezone.utc)}
 
     def pytest_bdd_after_step(
         self, request, feature, scenario, step, step_func, step_func_args
     ):
-        self.__calculate_step_duration(step)
+        if not self.enabled:
+            return
+
+        self.__calculate_step_data(step)
 
     def pytest_bdd_step_error(
         self, request, feature, scenario, step, step_func, step_func_args
     ):
-        self.__calculate_step_duration(step)
+        if not self.enabled:
+            return
+
+        self.__calculate_step_data(step, "Failed")
 
     def pytest_bdd_after_scenario(self, request, feature, scenario):
-        times = self.__step_times
+        if not self.enabled:
+            return
+
+        step_data = self.__step_data
 
         self.test_data = {
             "displayName": scenario.name,
@@ -57,9 +71,14 @@ class TestTracerPlugin:
             self.test_data["steps"].append(
                 {
                     "name": step.keyword + " " + step.name,
+                    "status": (
+                        step_data[step.line_number]["status"]
+                        if step.line_number in step_data
+                        else "Unknown"
+                    ),
                     "duration": (
-                        times[step.line_number]["duration"]
-                        if step.line_number in times
+                        step_data[step.line_number]["duration"]
+                        if step.line_number in step_data
                         else 0
                     ),
                 }
@@ -143,9 +162,9 @@ class TestTracerPlugin:
             return
 
         self.logger.debug("Create empty test_tracer folder")
-        shutil.rmtree(
-            constants.TEST_TRACER_RESULTS_PATH,
-        )
+
+        shutil.rmtree(constants.TEST_TRACER_RESULTS_PATH, ignore_errors=True)
+
         Path(constants.TEST_TRACER_RESULTS_PATH).mkdir(exist_ok=True)
 
     def __zip_results(self):
@@ -162,16 +181,18 @@ class TestTracerPlugin:
         self.logger.info("Uploading results to Test Tracer...")
         self.__make_request(
             self.upload_token,
-            f"{constants.TEST_TRACER_BASE_URL}/api/test-data/upload",
+            f"{constants.TEST_TRACER_BASE_URL}/test-data/upload",
             {"file": open(f"{constants.TEST_TRACER_RESULTS_PATH}/results.zip", "rb")},
         )
 
-    def __calculate_step_duration(self, step):
-        if "start" in self.__step_times[step.line_number]:
-            self.__step_times[step.line_number]["duration"] = math.ceil(
+    def __calculate_step_data(self, step, status="Passed"):
+        self.__step_data[step.line_number]["status"] = status
+
+        if "start" in self.__step_data[step.line_number]:
+            self.__step_data[step.line_number]["duration"] = math.ceil(
                 (
                     datetime.now(timezone.utc)
-                    - self.__step_times[step.line_number]["start"]
+                    - self.__step_data[step.line_number]["start"]
                 ).total_seconds()
                 * 1000
             )
@@ -180,7 +201,7 @@ class TestTracerPlugin:
         self.logger.info("Processing results on Test Tracer...")
         self.__make_request(
             self.upload_token,
-            f"{constants.TEST_TRACER_BASE_URL}/api/test-data/process",
+            f"{constants.TEST_TRACER_BASE_URL}/test-data/process",
             None,
         )
 
@@ -208,7 +229,7 @@ class TestTracerPlugin:
                 "Your API Token does not have permission to upload results"
             )
         else:
-            self.logger.warn(
+            self.logger.warning(
                 f"Test Tracer responded with a {response.status_code} status code. It will be back up and running soon"
             )
 

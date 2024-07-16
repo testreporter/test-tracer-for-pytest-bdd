@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pytest-test_tracer_for_pytest_bdd
-Version: 0.1.1
+Version: 0.1.7
 Summary: A plugin that allows coll test data for use on Test Tracer
 Author-email: Gavin Clark <testtracer.io@gmail.com>
 Maintainer-email: Gavin Clark <testtracer.io@gmail.com>
@@ -49,7 +49,7 @@ License-File: LICENSE
 Requires-Dist: pytest>=6.2.0
 
 =================================
-Test Tracer for Pytest
+Test Tracer for Pytest BDD
 =================================
 
 .. image:: https://img.shields.io/pypi/v/pytest-test-tracer-for-pytest.svg
@@ -64,13 +64,14 @@ Test Tracer for Pytest
     :target: https://github.com/testreporter/test-tracer-for-pytest/actions/workflows/main.yml
     :alt: See Build Status on GitHub Actions
 
-A plugin that allows collecting test data for use on Test Tracer.
+A plugin that allows collecting test data for use on Test Tracer. It is designed to be used with 
+the `Pytest BDD`_ tool
 
 
 Requirements
 ------------
 
-* `pytest`_
+* `Pytest BDD`_
 * A free `Test Tracer`_ account
 * An API token that allows uploading the test result
 
@@ -81,7 +82,7 @@ Installation
 
 You can install "pytest-test-tracer-for-pytest" via `pip`_ from `PyPI`_::
 
-    $ pip install pytest-test-tracer-for-pytest
+    $ pip install pytest-test-tracer-for-pytest-bdd
 
 
 Usage
@@ -156,3 +157,4 @@ If you encounter any problems, please `file an issue`_ along with a detailed des
 .. _`pip`: https://pypi.org/project/pip/
 .. _`PyPI`: https://pypi.org/project
 .. _`Test Tracer`: https://testtracer.io
+.. _`Pytest BDD`: https://pypi.org/project/pytest-bdd/
