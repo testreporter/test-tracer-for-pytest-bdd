@@ -62,3 +62,9 @@ def pytest_addoption(parser):
         required=False,
         help="The API token used to authenticate when uploading results",
     )
+    params.addoption(
+        constants.TEST_TRACER_ENVIRONMENT_NAME,
+        action="store",
+        required=False,
+        help="What environment are you running your tests on",
+    )

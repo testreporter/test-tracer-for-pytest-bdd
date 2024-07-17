@@ -129,6 +129,12 @@ class TestTracerPlugin:
         self.run_reference = config.getoption(constants.ARG_RUN_REFERENCE)
         self.build_version = config.getoption(constants.ARG_BUILD_VERSION)
         self.build_revision = config.getoption(constants.ARG_BUILD_REVISION)
+        self.environment_name = config.getoption(constants.TEST_TRACER_ENVIRONMENT_NAME)
+
+        if self.environment_name is None:
+            raise ValueError(
+                f"Test Tracer requires a {constants.TEST_TRACER_ENVIRONMENT_NAME} argument"
+            )
 
         if self.build_revision is None:
             raise ValueError(
@@ -295,6 +301,7 @@ class TestTracerPlugin:
         self.test_data["machineName"] = socket.gethostname()
         self.test_data["buildVersion"] = self.build_version
         self.test_data["buildRevision"] = self.build_revision
+        self.test_data["environment"] = self.environment_name
         self.test_data["branch"] = self.branch_name
         self.test_data["project"] = self.project_name
         self.test_data["testCaseRunId"] = str(uuid.uuid4())
