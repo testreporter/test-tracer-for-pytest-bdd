@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pytest-test_tracer_for_pytest_bdd
-Version: 0.1.7
+Version: 0.2.7
 Summary: A plugin that allows coll test data for use on Test Tracer
 Author-email: Gavin Clark <testtracer.io@gmail.com>
 Maintainer-email: Gavin Clark <testtracer.io@gmail.com>
