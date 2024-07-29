@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pytest-test_tracer_for_pytest_bdd
-Version: 0.3.0
+Version: 0.3.1
 Summary: A plugin that allows coll test data for use on Test Tracer
 Author-email: Gavin Clark <testtracer.io@gmail.com>
 Maintainer-email: Gavin Clark <testtracer.io@gmail.com>
@@ -129,6 +129,14 @@ Install the Plugin then activate it using the following Pytest parameters
    * - test-tracer-upload-token
      - No
      - If you want to upload results to Test Tracer, you need to specify the API token used to secure the upload
+     - None
+   * - test-tracer-environment-name
+     - True
+     - What environment are you running on? eg: Dev, Production, Staging, etc...
+     - None     
+   * - test-tracer-run-alias
+     - No
+     - If you want to you can provide an alias for this run. For example a run called "API Authentication Tests" will allow you to view, group and report on all tests that were part of that run
      - None
 
 Here is an example of using the Test Tracer for Pytest plugin with Git as the source control::
