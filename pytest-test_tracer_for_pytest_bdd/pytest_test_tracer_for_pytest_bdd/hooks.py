@@ -68,3 +68,10 @@ def pytest_addoption(parser):
         required=False,
         help="What environment are you running your tests on",
     )
+
+    params.addoption(
+        constants.ARG_RUN_ALIAS,
+        action="store",
+        required=False,
+        help="A name you can give to identify and group this run",
+    )

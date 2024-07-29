@@ -80,6 +80,14 @@ Install the Plugin then activate it using the following Pytest parameters
      - No
      - If you want to upload results to Test Tracer, you need to specify the API token used to secure the upload
      - None
+   * - test-tracer-environment-name
+     - True
+     - What environment are you running on? eg: Dev, Production, Staging, etc...
+     - None     
+   * - test-tracer-run-alias
+     - No
+     - If you want to you can provide an alias for this run. For example a run called "API Authentication Tests" will allow you to view, group and report on all tests that were part of that run
+     - None
 
 Here is an example of using the Test Tracer for Pytest plugin with Git as the source control::
 

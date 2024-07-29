@@ -127,6 +127,7 @@ class TestTracerPlugin:
             return
 
         self.run_reference = config.getoption(constants.ARG_RUN_REFERENCE)
+        self.run_alias = config.getoption(constants.ARG_RUN_ALIAS)
         self.build_version = config.getoption(constants.ARG_BUILD_VERSION)
         self.build_revision = config.getoption(constants.ARG_BUILD_REVISION)
         self.environment_name = config.getoption(constants.TEST_TRACER_ENVIRONMENT_NAME)
