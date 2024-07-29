@@ -303,7 +303,7 @@ class TestTracerPlugin:
         self.test_data["buildVersion"] = self.build_version
         self.test_data["buildRevision"] = self.build_revision
         self.test_data["environment"] = self.environment_name
-        self.run_alias["runAlias"] = self.run_alias
+        self.test_data["runAlias"] = self.run_alias
         self.test_data["branch"] = self.branch_name
         self.test_data["project"] = self.project_name
         self.test_data["testCaseRunId"] = str(uuid.uuid4())
