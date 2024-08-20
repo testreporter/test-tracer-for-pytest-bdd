@@ -72,12 +72,12 @@ class TestTracerPlugin:
                 {
                     "name": step.keyword + " " + step.name,
                     "status": (
-                        step_data[step.line_number]["status"]
+                        step_data[step.line_number].get("status", "Unknown")
                         if step.line_number in step_data
                         else "Unknown"
                     ),
                     "duration": (
-                        step_data[step.line_number]["duration"]
+                        step_data[step.line_number].get("duration", 0)
                         if step.line_number in step_data
                         else 0
                     ),
